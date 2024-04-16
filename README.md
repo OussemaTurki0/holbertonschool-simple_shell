@@ -8,7 +8,7 @@ shell.h:                 Header file containing function prototypes and any nece
 
 main.c:                  Main entry point for your shell program.
 
-origine.c:                Contains functions related to displaying the shell prompt.
+origine.c"promput":                Contains functions related to displaying the shell prompt.
                          The prompt is the text that appears on the screen to indicate that the shell is ready to accept input from the user. In this file, you would typically have a function that prints the prompt (e.g., print_prompt) and waits for the user to enter a command.
 
 execute.c:               Contains functions related to executing commands.
