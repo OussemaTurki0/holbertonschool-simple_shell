@@ -17,6 +17,8 @@ int shell_exit(char **args);
 int shell_env(char **args);
 int handle_built_in(char **args, int *status);
 void print_error(char *command);
+char *read_line(void);
+char *read_line_from_file(FILE *file);
 
 
 
