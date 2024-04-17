@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "4-shell.h"
 /**
  * execute_command - Execute a command.
@@ -17,7 +18,7 @@ int execute_command(char **args)
 	}
 
 	/* Check if the command is the exit command */
-	if (str(args[0], "exit") == 0)
+	if (strcmp(args[0], "exit") == 0)
 	{
 		return (0); /* Return 0 to exit the shell */
 	}
@@ -29,16 +30,16 @@ int execute_command(char **args)
 	{
 		/* Child process */
 		/* Execute the command */
-		if (execve(args[0], args) == -1)
+		if (execve(args[0], args, envi00) == -1)
 		{
-			error("shell");
+			perror("Error");
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
 		/* Error forking */
-		perror("shell");
+		perror("Error");
 	}
 	else
 	{
