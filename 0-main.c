@@ -27,7 +27,8 @@ int main(void)
 				}
 				return (0); /* Exit the program */
 			}
-			status = execute_command(line); /* Execute the command */
+			args = parse_line(line);
+			status = execute_command(args); /* Execute the command */
 			free(line);						/* Free the allocated memory for the input line */
 	} while (status);		/* Continue the loop if status is not 0 (exit command) */
 	}
@@ -39,7 +40,7 @@ int main(void)
 		if (line != NULL)
 		{
 			args = parse_line(line); /* Execute the command based on the arguments */
-			status = execute_command(line); /* Execute the command */
+			status = execute_command(args); /* Execute the command */
 			free(line);						/* Free the allocated memory for the input line */
 			return (status);				/* Return the status */
 		}
