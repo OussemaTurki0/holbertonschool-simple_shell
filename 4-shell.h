@@ -11,10 +11,12 @@ extern char **envi00;
 
 /* Function prototypes */
 
+void display_prompt(void);
 int execute_command(char **args);
 int shell_exit(char **args);
 int shell_env(char **args);
-int is_builtin(const char *command);
+int handle_built_in(char **args, int *status);
+void print_error(char *command);
 
 
 
