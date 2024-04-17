@@ -7,10 +7,14 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+extern char **envi00;
+
 /* Function prototypes */
+
 int execute_command(char **args);
-
-
+int shell_exit(char **args);
+int shell_env(char **args);
+int is_builtin(const char *command);
 
 
 
