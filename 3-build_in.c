@@ -22,13 +22,30 @@ int shell_exit(char **args)
 
 int shell_env(char **args)
 {
+	char **env;
 	/* Print the current environment */
-	for (char **env = envi00; *env != NULL; env++)
+	for (env = envi00; *env != NULL; env++)
 
 	{
 		printf("%s\n", *env);
 	}
 	return (1); /* Return 1 to continue the shell loop */
+}
+/**
+ * shell_echo - Handles the echo built-in command.
+ * @args: Array of command arguments.
+ */
+
+void shell_echo(char **args)
+{
+	int i;
+	/* Print each argument */
+	for (i = 1; args[i] != NULL; i++)
+	{
+		printf("%s ", args[i]);
+	}
+	printf("%s\n", args[i]);  /* Print newline after printing all arguments */
+
 }
 
 /**
@@ -55,7 +72,12 @@ int handle_built_in(char **args, int *status)
 		shell_env(args); /* Handle the env command */
 		return (1);
 	}
-	print_error(args[0]);
+	if (strcmp(args[0], "echo") == 0)
+	{
+		shell_echo(args);	/* Handle the echo command */
+		return (1);
+	}
+	print_error(args[0]); /* Print error for unrecognized command */
 	return (0);
 }
 /**
@@ -65,6 +87,6 @@ int handle_built_in(char **args, int *status)
 
 void_print_error(char *command)
 {
-	printf("Error: %s: command not found\n" command);
+	printf("Error: %s: command not found\n", command);
 }
 
