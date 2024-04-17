@@ -1,11 +1,12 @@
+#include <stdio.h>
 #include "4-shell.h"
 /**
- * A prompt is typically a symbol or message that indicates the shell is ready to receive input from the user.
+ * display_prompt - Display the shell prompt.
  */
-
 
 void display_prompt(void)
 {
-    /* Display the shell prompt */
-    printf("€ ");
+	printf("€ "); /* Print the shell prompt */
+	fflush(stdout); /* ensuring prompt is displayed immediately */
 }
+
