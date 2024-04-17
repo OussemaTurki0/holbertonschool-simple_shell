@@ -55,5 +55,16 @@ int handle_built_in(char **args, int *status)
 		shell_env(args); /* Handle the env command */
 		return (1);
 	}
+	print_error(args[0]);
 	return (0);
 }
+/**
+ * print_error - Prints an error message for unrecognized commands.
+ * @command: The unrecognized command.
+ */
+
+void_print_error(char *command)
+{
+	printf("Error: %s: command not found\n" command);
+}
+
