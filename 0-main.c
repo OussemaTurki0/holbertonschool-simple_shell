@@ -4,9 +4,10 @@
 
 /**
  * main - Entry point of the simple shell program.
- *
+ *Handle non-or-interactive mode: shell should be able to read commands from a file and execute them, rather than relying on user input from the terminal.
  * Return: 0 on success, non-zero on failure.
  */
+
 int main(void)
 {
     char **args;
