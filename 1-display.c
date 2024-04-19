@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include "4-shell.h"
+
 /**
  * display_prompt - Display the shell prompt.
  */
-
 void display_prompt(void)
 {
-	printf("€ "); /* Print the shell prompt */
-	fflush(stdout); /* ensuring prompt is displayed immediately */
+    printf("€ "); /* Print the shell prompt */
+    fflush(stdout); /* ensuring prompt is displayed immediately */
 }
-

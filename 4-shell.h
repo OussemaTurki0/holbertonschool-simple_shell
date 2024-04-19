@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 
-extern char **envi00;
+extern char **environ;
 
 /* Function prototypes */
 
@@ -19,12 +19,5 @@ int handle_built_in(char **args, int *status);
 void print_error(char *command);
 char *read_line(void);
 char *read_line_from_file(FILE *file);
-
-
-
-
-
-
-
 
 #endif /* SHELL_H */
