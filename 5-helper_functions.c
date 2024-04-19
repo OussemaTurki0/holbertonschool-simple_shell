@@ -36,7 +36,7 @@ int count_tokens(const char *line, const char *delim)
  * @line: The input string.
  * Return: An array of strings.
  */
-int **tokenizer(char *line)
+char **tokenizer(char *line)
 {
 	char *token;
 	char delim[] = " "; /* Delimiter for tokenization */
@@ -76,3 +76,4 @@ int **tokenizer(char *line)
 	tokenss[i] = NULL; /* Set the last element of the array to NULL */
 	return (tokenss);  /* Return the array of tokens */
 }
+

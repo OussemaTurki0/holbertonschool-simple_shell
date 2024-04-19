@@ -10,24 +10,24 @@
  */
 char *read_line(void)
 {
-    char *line = NULL;
-    size_t bufsize = 0;
+	char *line = NULL;
+	size_t bufsize = 0;
 
     /* Read a line of input from standard input */
-    if (getline(&line, &bufsize, stdin) == -1)
-    {
-        if (feof(stdin))
-        {
-            free(line);
-            return (NULL);
-        }
-        else
-        {
-            perror("Cannot read line");
-            exit(EXIT_FAILURE);
-        }
-    }
-    return (line);
+	if (getline(&line, &bufsize, stdin) == -1)
+	{
+		if (feof(stdin))
+		{
+			free(line);
+			return (NULL);
+		}
+		else
+		{
+			perror("Cannot read line");
+			exit(EXIT_FAILURE);
+		}
+	}
+	return (line);
 }
 
 /**
@@ -40,21 +40,22 @@ char *read_line(void)
  */
 char *read_line_from_file(FILE *file)
 {
-    char *line = NULL;
-    size_t bufsize = 0;
+	char *line = NULL;
+	size_t bufsize = 0;
 
-    if (getline(&line, &bufsize, file) == -1)
-    {
-        if (feof(file))
-        {
-            free(line);
-            return (NULL);
-        }
-        else
-        {
-            perror("Cannot read line from file");
-            exit(EXIT_FAILURE);
-        }
-    }
-    return (line);
+	if (getline(&line, &bufsize, file) == -1)
+	{
+		if (feof(file))
+		{
+			free(line);
+			return (NULL);
+		}
+		else
+		{
+			perror("Cannot read line from file");
+			return (NULL);
+		}
+	}
+	return (line);
 }
+

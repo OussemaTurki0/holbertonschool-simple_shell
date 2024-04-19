@@ -9,3 +9,4 @@ void display_prompt(void)
     printf("€ "); /* Print the shell prompt */
     fflush(stdout); /* ensuring prompt is displayed immediately */
 }
+
