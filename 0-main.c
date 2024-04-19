@@ -40,10 +40,16 @@ int main(void)
 				}
 				return (0); /* Exit the program */
 			}
-			args = parse_line(line);
+			args = tokenizer(line);			/* Tokenize the input line */
 			status = execute_command(args); /* Execute the command */
 			free(line);						/* Free the allocated memory for the input line */
-		} while (status);					/* Continue the loop if status is not 0 (exit command) */
+			/* Free the memory allocated for each argument */
+			for (i = 0; args[i] != NULL; i++)
+			{
+				free(args[i]);
+			}
+			free(args);	  /* Free the allocated memory for the args array */
+		} while (status); /* Continue the loop if status is not 0 (exit command) */
 	}
 
 	/* Handle non-interactive mode */
@@ -52,7 +58,7 @@ int main(void)
 		line = read_line_from_file(stdin); /* Read a line of input from stdin */
 		if (line != NULL)
 		{
-			args = parse_line(line); /* Parse the input line into arguments */
+			args = tokenizer(line); /* tokenize the input line into arguments */
 			if (args != NULL)
 			{
 				status = execute_command(args); /* Execute the command */
@@ -60,12 +66,12 @@ int main(void)
 				{
 					print_error("shell", args[0]); /* Execute the command */
 				}
-				// Free the memory allocated for each argument
+				/* Free the memory allocated for each argument */
 				for (i = 0; args[i] != NULL; i++)
 				{
 					free(args[i]);
 				}
-				// Free the memory allocated for the args array itself
+				/* Free the memory allocated for the args array itself */
 				free(args);
 				free(line);		 /* Free the allocated memory for the input line */
 				return (status); /* Return the status */

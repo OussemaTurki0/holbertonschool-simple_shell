@@ -15,9 +15,14 @@ void display_prompt(void);
 int execute_command(char **args);
 int shell_exit(char **args);
 int shell_env(char **args);
+void shell_echo(char **args);
 int handle_built_in(char **args, int *status);
-void print_error(char *command);
 char *read_line(void);
 char *read_line_from_file(FILE *file);
+void print_error(char *program_name, char *command);
+int **tokenizer(char *line);
+int count_tokens(const char *line, const char *delim);
+
+
 
 #endif /* SHELL_H */
