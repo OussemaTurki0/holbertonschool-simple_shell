@@ -5,7 +5,7 @@
 /**
  * read_line - Read a line of input from standard input (interactive mode).
  *
- * Return: A dynamically allocated string containing the input line,
+ * Return: A dynamically allocated str containing the input line,
  *         or NULL if end of file (Ctrl+D) or error occurs.
  */
 char *read_line(void)
@@ -35,7 +35,7 @@ char *read_line(void)
  * a file (non-interactive mode).
  * @file: Pointer to the file from which to read input.
  *
- * Return: A dynamically allocated string containing the input line,
+ * Return: A dynamically allocated str containing the input line,
  * or NULL if end of file or error occurs.
  */
 char *read_line_from_file(FILE *file)
