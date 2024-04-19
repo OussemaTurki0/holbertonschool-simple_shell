@@ -5,7 +5,7 @@
 
 /**
  * shell_exit - Handles the exit command.
- * @args: Array of command arguments.
+ * @args: Array of command arg.
  * Return: 0 to indicate the shell should exit.
  */
 int shell_exit(char **args)
@@ -15,13 +15,13 @@ int shell_exit(char **args)
 
 /**
  * shell_env - Handles the env command.
- * @args: Array of command arguments.
+ * @args: Array of command arg.
  * Return: 1 to continue the shell loop.
  */
 int shell_env(char **args)
 {
     char **env;
-    /* Print the current environment */
+    /* Print the current envir */
     for (env = environ; *env != NULL; env++)
     {
         printf("%s\n", *env);
@@ -31,22 +31,22 @@ int shell_env(char **args)
 
 /**
  * shell_echo - Handles the echo built-in command.
- * @args: Array of command arguments.
+ * @args: Array of command arg.
  */
 void shell_echo(char **args)
 {
     int i;
-    /* Print each argument */
+    /* Print each arg */
     for (i = 1; args[i] != NULL; i++)
     {
         printf("%s ", args[i]);
     }
-    printf("\n"); /* Print newline after printing all arguments */
+    printf("\n"); /* Print newline after printing all arg */
 }
 
 /**
  * handle_built_in - Handles built-in commands.
- * @args: Array of command arguments.
+ * @args: Array of command arg.
  * @status: Pointer to the status variable.
  * Return: 1 if handled as built-in, 0 otherwise.
  */
