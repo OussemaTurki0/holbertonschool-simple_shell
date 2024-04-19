@@ -19,3 +19,66 @@ helper_functions.c:      Contains any additional helper functions you may need.
 
 build_in.c: Contains:    implementations for built-in shell commands (e.g., exit, env).
                          Built-in commands are commands that are implemented within the shell itself, rather than being external programs. Examples of built-in commands include exit, which exits the shell, and env, which prints the current environment variables. In this file, you would have functions that implement these built-in commands.
+
+
++-----------------------------+
+|        Start Program        |
++-----------------------------+
+             |
+             v
++----------------------------+
+|    Check Interactive Mode   |
++----------------------------+
+             |
+             v
++----------------------------+
+|     Display Shell Prompt    |
++----------------------------+
+             |
+             v
++----------------------------+
+|       Read Input Line       |
++----------------------------+
+             |
+             v
++----------------------------+
+|       Parse Input Line      |
++----------------------------+
+             |
+             v
++----------------------------+
+|   Check for Built-in Commands |
++----------------------------+
+       |                |
+       |                |
+       |   Yes        No   |
+       v                |
++----------------------------+
+|     Execute Built-in Command |
++----------------------------+
+             |
+             v
++----------------------------+
+|    Fork and Execute Command  |
++----------------------------+
+             |
+             v
++----------------------------+
+|      Wait for Child Process  |
+|         to Complete          |
++----------------------------+
+             |
+             v
++----------------------------+
+|     Check for Exit Command   |
++----------------------------+
+             |
+             v
++----------------------------+
+|       Continue Shell Loop    |
++----------------------------+
+             |
+             v
++----------------------------+
+|         End Program         |
++----------------------------+
