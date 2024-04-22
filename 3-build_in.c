@@ -29,20 +29,25 @@ int shell_env(__attribute__((unused)) char **args)
 	}
 	return (1); /* Return 1 to continue the shell loop */
 }
-
 /**
- * shell_echo - Handles the echo built-in command.
- * @args: Array of command arg.
+ * shell_cd - Change the current working directory.
+ * @args: Array of command arguments
+ * (should contain the directory to change to).
+ * Return: 1 on success, -1 on failure.
  */
-void shell_echo(char **args)
+int shell_cd(char **args)
 {
-	int i;
-	/* Print each arg */
-	for (i = 1; args[i] != NULL; i++)
+	if (args[1] == NULL)
 	{
-		printf("%s ", args[i]);
+		fprintf(stderr, "Usage: cd <directory>\n");
+		return (-1);
 	}
-	printf("\n"); /* Print newline after printing all arg */
+	if (chdir(args[1]) != 0)
+	{
+		perror("cd");
+		return (-1);
+	}
+	return (1);
 }
 
 /**
@@ -51,29 +56,33 @@ void shell_echo(char **args)
  * @status: Pointer to the status variable.
  * Return: 1 if handled as built-in, 0 otherwise.
  */
-int handle_built_in(char **args, int *status)
+int handle_built_in(char **args, __attribute__((unused)) int *status)
 {
+	buildin cmds[] = {
+		{"exit", shell_exit},
+		{"env", shell_env},
+		{"cd", shell_cd},
+		{NULL, NULL}}; /* Null terminator */
+
+	int i;
+
 	if (args[0] == NULL) /* Check if the command is empty */
 	{
-		return (1); /* Return 1 to indicate the command was handled */
-	}
-	/* Implement logic to handle built-in commands */
-	if (strcmp(args[0], "exit") == 0)
-	{
-		shell_exit(args); /* Handle the exit command */
-		*status = 0;
 		return (1);
 	}
-	else if (strcmp(args[0], "env") == 0)
+	/* Loop through the built-in commands */
+	for (i = 0; cmds[i].name != NULL; i++)
 	{
-		shell_env(args); /* Handle the env command */
-		return (1);
+		printf("Comparing: %s\n", args[0]);
+		printf("With: %s\n", cmds[i].name);
+		/* If command matches a built-in command, execute it */
+		if (strcmp(args[0], cmds[i].name) == 0)
+		{
+			printf("Match found: %s\n", args[0]);
+			return (cmds[i].function(args));
+		}
 	}
-	if (strcmp(args[0], "echo") == 0)
-	{
-		shell_echo(args); /* Handle the echo command */
-		return (1);
-	}
-	print_error(args[0], args[1]); /* Print error for unrecognized command */
+	/* If command not recognized, print error */
+	print_error("simple shell", args[0]);
 	return (0);
 }
