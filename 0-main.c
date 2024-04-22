@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "4-shell.h"
 
 /**
@@ -32,6 +33,7 @@ int main(void)
 		{
 			display_prompt();	/* Display the shell prompt */
 			line = read_line(); /* Read a line of input from the user */
+
 			if (line == NULL)
 			{
 				if (isatty(STDIN_FILENO))
@@ -41,6 +43,7 @@ int main(void)
 				return (0); /* Exit the program */
 			}
 			args = tokenizer(line);			/* Tokenize the input line */
+
 			status = execute_command(args); /* Execute the command */
 			free(line);						/* Free the allocated memory for the input line */
 			/* Free the memory allocated for each argument */
@@ -83,6 +86,6 @@ int main(void)
 			}
 		}
 
-		return (0); /* Exit the program with status 0 on success */
 	}
+	return (0); /* Exit the program with status 0 on success */
 }

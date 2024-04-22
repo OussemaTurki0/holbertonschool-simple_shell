@@ -8,8 +8,9 @@
  * @args: Array of command arg.
  * Return: 0 to indicate the shell should exit.
  */
-int shell_exit(char **args)
+int shell_exit(__attribute__((unused)) char **args)
 {
+
 	return (0); /* Return 0 to exit the shell */
 }
 
@@ -18,7 +19,7 @@ int shell_exit(char **args)
  * @args: Array of command arg.
  * Return: 1 to continue the shell loop.
  */
-int shell_env(char **args)
+int shell_env(__attribute__((unused)) char **args)
 {
 	char **env;
 	/* Print the current envir */
@@ -60,6 +61,7 @@ int handle_built_in(char **args, int *status)
 	if (strcmp(args[0], "exit") == 0)
 	{
 		shell_exit(args); /* Handle the exit command */
+		*status = 0;
 		return (1);
 	}
 	else if (strcmp(args[0], "env") == 0)
@@ -72,6 +74,6 @@ int handle_built_in(char **args, int *status)
 		shell_echo(args); /* Handle the echo command */
 		return (1);
 	}
-	print_error(args[0]); /* Print error for unrecognized command */
+	print_error(args[0], args[1]); /* Print error for unrecognized command */
 	return (0);
 }
