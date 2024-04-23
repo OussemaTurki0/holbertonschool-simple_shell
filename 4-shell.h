@@ -35,7 +35,7 @@ char *read_line_from_file(FILE *file);
 void print_error(char *program_name, char *command);
 char **tokenizer(char *line);
 int count_tokens(const char *line, const char *delim);
-int handle_built_in(char **args);
+
 int handle_built_in(char **args, int *status);
 
 #endif /* SHELL_H */
