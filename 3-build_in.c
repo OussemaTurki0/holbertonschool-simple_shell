@@ -56,33 +56,30 @@ int shell_cd(char **args)
  * @status: Pointer to the status variable.
  * Return: 1 if handled as built-in, 0 otherwise.
  */
-int handle_built_in(char **args, __attribute__((unused)) int *status)
+int handle_built_in(char **args, int *status)
 {
-	buildin cmds[] = {
-		{"exit", shell_exit},
-		{"env", shell_env},
-		{"cd", shell_cd},
-		{NULL, NULL}}; /* Null terminator */
+    buildin cmds[] = {
+        {"exit", shell_exit},
+        {"env", shell_env},
+        {"cd", shell_cd},
+        {NULL, NULL}}; /* Null terminator */
 
-	int i;
+    int i;
 
-	if (args[0] == NULL) /* Check if the command is empty */
-	{
-		return (1);
-	}
-	/* Loop through the built-in commands */
-	for (i = 0; cmds[i].name != NULL; i++)
-	{
-		printf("Comparing: %s\n", args[0]);
-		printf("With: %s\n", cmds[i].name);
-		/* If command matches a built-in command, execute it */
-		if (strcmp(args[0], cmds[i].name) == 0)
-		{
-			printf("Match found: %s\n", args[0]);
-			return (cmds[i].function(args));
-		}
-	}
-	/* If command not recognized, print error */
-	print_error("simple shell", args[0]);
-	return (0);
+    if (args[0] == NULL) /* Check if the command is empty */
+    {
+        return (0);
+    }
+    /* Loop through the built-in commands */
+    for (i = 0; cmds[i].name != NULL; i++)
+    {
+        /* If command matches a built-in command, execute it */
+        if (strcmp(args[0], cmds[i].name) == 0)
+        {
+            return (cmds[i].function(args));
+        }
+    }
+    /* If command not recognized, print error */
+    print_error("simple shell", args[0]);
+    return (0);
 }
