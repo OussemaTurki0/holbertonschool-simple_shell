@@ -12,17 +12,14 @@ int execute_command(char **args)
     pid_t pid;
     char *path;
 
+    path = get_command_path(args[0]);
     if (args[0] == NULL)
         return (1);
 
     if (handle_built_in(args, &status) == 1)
     {
-        printf("Handled as built-in\n");
-
         return (status);
     }
-    path = get_command_path(args[0]);
-    printf("Not a built-in command\n");
 
     if (path == NULL)
     {
