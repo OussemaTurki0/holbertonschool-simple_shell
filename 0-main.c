@@ -10,54 +10,80 @@
  */
 void print_error(char *program_name, char *command)
 {
-	fprintf(stderr, "Error: %s: %s: command not found\n", program_name, command);
+    fprintf(stderr, "Error: %s: %s: command not found\n", program_name, command);
 }
 
 /**
  * main - Entry point of the simple shell program.
- *Handle non-or-interactive mode: shell should be able to read commands from a file and execute them, rather than relying on user input from the terminal.
+ * Handle non-or-interactive mode: shell should be able to read commands from a file and execute them, rather than relying on user input from the terminal.
  * Return: 0 on success, non-zero on failure.
  */
-
 int main(void)
 {
-    char *line;
+    int i;
     char **args;
+    char *line;
     int status;
 
-    do
+    /* Handle interactive mode */
+    if (isatty(STDIN_FILENO))
     {
-        display_prompt();        /* Display the shell prompt */
-        line = read_line();      /* Read a line of input from the user */
-        if (line == NULL)        /* Check for end-of-file (Ctrl+D) */
+        do
         {
-            printf("\n");        /* Print a newline if Ctrl+D is pressed */
-            break;              /* Exit the loop */
-        }
-        args = tokenizer(line); /* Tokenize the input line */
-        if (args == NULL)       /* Check for tokenization error */
-        {
-            fprintf(stderr, "Error: Unable to tokenize input.\n");
-            continue;           /* Skip to the next iteration */
-        }
+            display_prompt();                   /* Display the shell prompt */
+            line = read_line();                 /* Read a line of input from the user */
 
-        /* Check for the exit command */
-        if (strcmp(args[0], "exit") == 0)
-        {
-            free(line);         /* Free the allocated memory for the input line */
-            free(args);         /* Free the allocated memory for the args array */
-            break;              /* Exit the loop */
-        }
+            if (line == NULL)
+            {
+                if (isatty(STDIN_FILENO))
+                {
+                    printf("\n");               /* Print a newline if Ctrl+D is pressed */
+                }
+                return (0);                     /* Exit the program */
+            }
+            args = tokenizer(line);             /* Tokenize the input line */
 
-        status = execute_command(args); /* Execute the command */
-        free(line);             /* Free the allocated memory for the input line */
-        /* Free the memory allocated for each argument */
-        for (int i = 0; args[i] != NULL; i++)
-        {
-            free(args[i]);
-        }
-        free(args);             /* Free the allocated memory for the args array */
-    } while (1);                /* Continue the loop indefinitely */
+            status = execute_command(args);     /* Execute the command */
+            free(line);                         /* Free the allocated memory for the input line */
+            /* Free the memory allocated for each argument */
+            for (i = 0; args[i] != NULL; i++)
+            {
+                free(args[i]);
+            }
+            free(args);                         /* Free the allocated memory for the args array */
+        } while (status);                       /* Continue the loop if status is not 0 (exit command) */
+    }
 
-    return (0);                 /* Exit the program */
+    /* Handle non-interactive mode */
+    else
+    {
+        line = read_line_from_file(stdin);     /* Read a line of input from stdin */
+        if (line != NULL)
+        {
+            args = tokenizer(line);             /* Tokenize the input line into arguments */
+            if (args != NULL)
+            {
+                status = execute_command(args); /* Execute the command */
+                if (status == -1)
+                {
+                    print_error("shell", args[0]); /* Print an error message */
+                }
+                /* Free the memory allocated for each argument */
+                for (i = 0; args[i] != NULL; i++)
+                {
+                    free(args[i]);
+                }
+                /* Free the memory allocated for the args array itself */
+                free(args);
+                free(line);                     /* Free the allocated memory for the input line */
+                return (status);                /* Return the status */
+            }
+            else
+            {
+                fprintf(stderr, "Error: Unable to read input.\n");
+                return (1);                     /* Return non-zero status on failure */
+            }
+        }
+    }
+    return (0);                                 /* Exit the program with status 0 on success */
 }
