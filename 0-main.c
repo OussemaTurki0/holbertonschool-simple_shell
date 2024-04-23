@@ -12,6 +12,7 @@ void print_error(char *program_name, char *command)
 {
     fprintf(stderr, "Error: %s: %s: command not found\n",
         program_name, command);
+
 }
 
 /**
@@ -24,12 +25,15 @@ void handle_interactive_mode(void)
     char *line;
     int status;
 
-    do {
+    do
+    {
         display_prompt();               /* Display the shell prompt */
         line = read_line();             /* Read a line of input from the user */
 
-        if (line == NULL) {
-            if (isatty(STDIN_FILENO)) {
+        if (line == NULL)
+        {
+            if (isatty(STDIN_FILENO))
+            {
                 printf("\n");           /* Print a newline if Ctrl+D is pressed */
             }
             return;                     /* Exit the function */
@@ -39,7 +43,8 @@ void handle_interactive_mode(void)
         status = execute_command(args); /* Execute the command */
         free(line);                     /* Free the allocated memory for the input line */
         /* Free the memory allocated for each argument */
-        for (i = 0; args[i] != NULL; i++) {
+        for (i = 0; args[i] != NULL; i++)
+        {
             free(args[i]);
         }
         free(args);                     /* Free the allocated memory for the args array */
@@ -56,22 +61,28 @@ void handle_non_interactive_mode(void)
     int status;
 
     line = read_line_from_file(stdin); /* Read a line of input from stdin */
-    if (line != NULL) {
+    if (line != NULL)
+    {
         args = tokenizer(line);         /* Tokenize the input line into arguments */
-        if (args != NULL) {
+        if (args != NULL)
+        {
             status = execute_command(args); /* Execute the command */
-            if (status == -1) {
+            if (status == -1)
+            {
                 print_error("shell", args[0]); /* Print an error message */
             }
             /* Free the memory allocated for each argument */
-            for (int i = 0; args[i] != NULL; i++) {
+            for (int i = 0; args[i] != NULL; i++)
+            {
                 free(args[i]);
             }
             /* Free the memory allocated for the args array itself */
             free(args);
             free(line);                 /* Free the allocated memory for the input line */
             return;                     /* Exit the function */
-        } else {
+        }
+        else
+        {
             fprintf(stderr, "Error: Unable to read input.\n");
             exit(1);                    /* Exit the program with non-zero status */
         }
@@ -85,9 +96,12 @@ void handle_non_interactive_mode(void)
  */
 int main(void)
 {
-    if (isatty(STDIN_FILENO)) {
+    if (isatty(STDIN_FILENO))
+    {
         handle_interactive_mode();  /* Handle interactive mode */
-    } else {
+    }
+    else
+    {
         handle_non_interactive_mode(); /* Handle non-interactive mode */
     }
 
