@@ -57,6 +57,7 @@ void handle_interactive_mode(void)
 void handle_non_interactive_mode(void)
 {
     char *line;
+	int i;
     char **args;
     int status;
 
@@ -72,7 +73,7 @@ void handle_non_interactive_mode(void)
                 print_error("shell", args[0]); /* Print an error message */
             }
             /* Free the memory allocated for each argument */
-            for (int i = 0; args[i] != NULL; i++)
+            for (i = 0; args[i] != NULL; i++)
             {
                 free(args[i]);
             }
