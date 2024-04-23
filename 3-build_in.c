@@ -53,9 +53,10 @@ int shell_cd(char **args)
 /**
  * handle_built_in - Handles built-in commands.
  * @args: Array of command arg.
+ * @status: Pointer to the status variable.
  * Return: 1 if handled as built-in, 0 otherwise.
  */
-int handle_built_in(char **args)
+int handle_built_in(char **args, int *status)
 {
     buildin cmds[] = {
         {"exit", shell_exit},
@@ -80,5 +81,6 @@ int handle_built_in(char **args)
     }
     /* If command not recognized, print error */
     print_error("simple shell", args[0]);
+    *status = 2;
     return (0);
 }
