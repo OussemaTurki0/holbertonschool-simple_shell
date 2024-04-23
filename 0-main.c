@@ -10,7 +10,7 @@
  */
 void print_error(char *program_name, char *command)
 {
-    fprintf(stderr, "Error: %s: %s: command not found\n", program_name, command);
+    fprintf(stderr, "Error: %s: %s: shit not found\n", program_name, command);
 }
 
 /**

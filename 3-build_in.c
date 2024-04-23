@@ -78,9 +78,12 @@ int handle_built_in(char **args, int *status)
         {
             return (cmds[i].function(args));
         }
+		
+		
+
     }
+    print_error("command not , shit", args[0]);
     /* If command not recognized, print error */
-    print_error("simple shell", args[0]);
     *status = 2;
     return (0);
 }
