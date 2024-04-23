@@ -6,6 +6,6 @@
  */
 void display_prompt(void)
 {
-	printf("simple shell€ : "); /* Print the shell prompt */
+	printf("€: "); /* Print the shell prompt */
 	fflush(stdout);           /* ensuring prompt is displayed immediately */
 }
