@@ -16,9 +16,9 @@ int execute_builtin(char **args)
     {
         return (shell_env());
     }
-    else if (strcmp(args[0], "cd") == 0)
+    else if (strcmp(args[0], "pwd") == 0)
     {
-        return (shell_cd(args));
+        return (shell_pwd());
     }
     return (0); /* Not a builtin command */
 }
@@ -54,7 +54,7 @@ int execute(char **args)
     pid = fork();
     if (pid == 0)
     {
-        if (execvp(args[0], args) == -1)
+        if (execve(cmd_path, args, environ) == -1)
         {
             handle_error();
         }

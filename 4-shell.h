@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <limits.h>
 #include <sys/wait.h>
 #include <errno.h>
 
@@ -22,7 +23,7 @@ int execute(char **args);
 int execute_builtin(char **args);
 void free_args(char **args);
 int shell_exit(void);
-int shell_cd(char **args);
+int shell_pwd(void);
 int shell_env(void);
 char *get_command_path(const char *cmd);
 int is_builtin(char *cmd);

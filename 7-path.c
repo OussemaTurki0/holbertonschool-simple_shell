@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include "4-shell.h"
 
 /**
@@ -17,6 +13,7 @@ char *get_command_path(const char *cmd)
     char *token;
     char *temporary;
     char *delim = ":";
+	size_t len;
 
     if (cmd == NULL)
         return (NULL);
@@ -36,12 +33,15 @@ char *get_command_path(const char *cmd)
     while (token != NULL)
     {
         /* Construct the full path to the command */
-        full_path = malloc(strlen(token) + strlen(cmd) + 2);
+		len = strlen(token) + strlen(cmd) + 2;
+        full_path = malloc(len);
         if (full_path == NULL)
         {
             free(temporary);
             return (NULL);
         }
+        snprintf(full_path, len, "%s/%s", token, cmd);
+    	printf("Trying path: %s\n", full_path);
 
         strcpy(full_path, token);
         strcat(full_path, "/");

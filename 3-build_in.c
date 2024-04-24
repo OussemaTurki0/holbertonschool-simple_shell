@@ -11,25 +11,25 @@ int shell_exit(void)
 }
 
 /**
- * shell_cd - Builtin command: cd
- * @args: Array of command arguments
+ * shell_pwd - Builtin command: pwd
  *
  * Return: 1 if successful, 0 otherwise
  */
-int shell_cd(char **args)
+int shell_pwd(void)
 {
-	if (args[1] == NULL)
+	char cwd[PATH_MAX];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		fprintf(stderr, "hsh: expected argument to \"cd\"\n");
+		printf("%s\n", cwd);
 		return (1);
 	}
-	if (chdir(args[1]) != 0)
+	else
 	{
-		perror("Error");
+		perror("getcwd() error");
+		return (0);
 	}
-	return (1);
 }
-
 /**
  * shell_env - Builtin command: env
  *
@@ -55,7 +55,7 @@ int shell_env(void)
  */
 int is_builtin(char *cmd)
 {
-	return ((strcmp(cmd, "exit") == 0 || strcmp(cmd, "cd") == 0
+	return ((strcmp(cmd, "exit") == 0 || strcmp(cmd, "pwd") == 0
 	|| strcmp(cmd, "env") == 0));
 }
 /**
