@@ -61,12 +61,12 @@ int main(void)
 	if (isatty(STDIN_FILENO))
 	{
         /* Interactive mode */
-		run_interactive_shell();
+		interactive_shell();
 	}
 	else
 	{
         /* Non-interactive mode */
-		run_non_interactive_shell();
+		non_interactive_shell();
 	}
 
 	return (EXIT_SUCCESS);
