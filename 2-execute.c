@@ -1,5 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <string.h>
 #include "4-shell.h"
-
 /**
  * execute_command - Execute a command.
  * @args: Array of command arguments.
@@ -13,18 +19,13 @@ int execute_command(char **args)
     char *path;
 
     path = get_command_path(args[0]);
-    if (args[0] == NULL)
+    if (path == NULL)
         return (1);
 
     if (handle_built_in(args, &status) == 1)
     {
+        free(path);  /* Free path if it's a built-in command */
         return (status);
-    }
-
-    if (path == NULL)
-    {
-        fprintf(stderr, "%s: command not found\n", args[0]);
-        return (1);
     }
 
     pid = fork();
@@ -46,6 +47,6 @@ int execute_command(char **args)
         waitpid(pid, &status, 0);
     }
 
-    free(path);
+    free(path);  /* Free path if it's an external command */
     return (1);
 }

@@ -11,8 +11,7 @@
 void print_error(char *program_name, char *command)
 {
     fprintf(stderr, "Error: %s: %s: command not found\n",
-        program_name, command);
-
+            program_name, command);
 }
 
 /**
@@ -38,16 +37,27 @@ void handle_interactive_mode(void)
             }
             return;                     /* Exit the function */
         }
+
         args = tokenizer(line);         /* Tokenize the input line */
+        if (args != NULL)
+        {
+            status = handle_built_in(args, &status); /* Handle built-in commands */
+            if (status == 0)
+            {
+                free(line);                     /* Free the allocated memory for the input line */
+                free(args);                     /* Free the allocated memory for the args array */
+                return;                     /* Exit the function */
+            }
+            /* Free the memory allocated for each argument */
+            for (i = 0; args[i] != NULL; i++)
+            {
+                free(args[i]);
+            }
+            free(args);                     /* Free the allocated memory for the args array */
+        }
 
         status = execute_command(args); /* Execute the command */
         free(line);                     /* Free the allocated memory for the input line */
-        /* Free the memory allocated for each argument */
-        for (i = 0; args[i] != NULL; i++)
-        {
-            free(args[i]);
-        }
-        free(args);                     /* Free the allocated memory for the args array */
     } while (status);                   /* Continue the loop if status is not 0 (exit command) */
 }
 
@@ -57,7 +67,7 @@ void handle_interactive_mode(void)
 void handle_non_interactive_mode(void)
 {
     char *line;
-	int i;
+    int i;
     char **args;
     int status;
 
@@ -67,10 +77,12 @@ void handle_non_interactive_mode(void)
         args = tokenizer(line);         /* Tokenize the input line into arguments */
         if (args != NULL)
         {
-            status = execute_command(args); /* Execute the command */
-            if (status == -1)
+            status = handle_built_in(args, &status); /* Handle built-in commands */
+            if (status == 0)
             {
-                print_error("shell", args[0]); /* Print an error message */
+                free(line);                     /* Free the allocated memory for the input line */
+                free(args);                     /* Free the allocated memory for the args array */
+                return;                     /* Exit the function */
             }
             /* Free the memory allocated for each argument */
             for (i = 0; args[i] != NULL; i++)

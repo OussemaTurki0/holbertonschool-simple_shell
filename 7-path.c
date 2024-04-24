@@ -12,36 +12,51 @@
  */
 char *get_command_path(const char *command)
 {
-	char *directory_path, *current, *cmd_path;
-	char *path = getenv("PATH");
+    char *path;
+    char *token;
+    char *tmp;
+    char *delim = ":";
 
-	if (!path || !command)
-		return (NULL);
-	current = strtok(path, ":");
-	while (current != NULL)
-	{
-		directory_path = strdup(current);
-		if (directory_path == NULL)
-			return (NULL);
+    if (command == NULL)
+        return NULL;
 
-		cmd_path = malloc(strlen(directory_path) + strlen(command) + 2);
-		if (cmd_path == NULL)
-		{
-			free(directory_path);
-			return (NULL);
-		}
-		strcpy(cmd_path, directory_path);
-		strcat(cmd_path, "/");
-		strcat(cmd_path, command);
+    /* Get the PATH environment variable */
+    path = getenv("PATH");
+    if (path == NULL)
+        return NULL;
 
-		if (access(cmd_path, X_OK) == 0)
-		{
-			free(directory_path);
-			return (cmd_path);
-		}
-		free(directory_path);
-		free(cmd_path);
-		current = strtok(NULL, ":");
-	}
-	return (NULL); /* Command not found in any directory in PATH */
+    /* Create a copy of PATH to tokenize */
+    tmp = strdup(path);
+    if (tmp == NULL)
+        return NULL;
+
+    /* Tokenize the PATH variable to search for the command */
+    token = strtok(tmp, delim);
+    while (token != NULL)
+    {
+        /* Construct the full path to the command */
+        char *full_path = malloc(strlen(token) + strlen(command) + 2);
+        if (full_path == NULL)
+        {
+            free(tmp);
+            return NULL;
+        }
+
+        strcpy(full_path, token);
+        strcat(full_path, "/");
+        strcat(full_path, command);
+
+        /* Check if the command exists at the constructed path */
+        if (access(full_path, F_OK) == 0)
+        {
+            free(tmp);
+            return full_path;
+        }
+
+        free(full_path);
+        token = strtok(NULL, delim);
+    }
+
+    free(tmp);
+    return NULL; /* Command not found */
 }

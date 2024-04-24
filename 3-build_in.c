@@ -66,24 +66,21 @@ int handle_built_in(char **args, int *status)
 
     int i;
 
-    if (args[0] == NULL) /* Check if the command is empty */
+    if (args == NULL || args[0] == NULL) /* Check if the command is empty */
     {
         return (0);
     }
+
     /* Loop through the built-in commands */
     for (i = 0; cmds[i].name != NULL; i++)
     {
         /* If command matches a built-in command, execute it */
         if (strcmp(args[0], cmds[i].name) == 0)
         {
-            return (cmds[i].function(args));
+            *status = cmds[i].function(args);
+            return (1);
         }
-		
-		
-
     }
-    print_error("command not , shit", args[0]);
-    /* If command not recognized, print error */
-    *status = 2;
-    return (0);
+
+    return (0); /* Command not found */
 }
