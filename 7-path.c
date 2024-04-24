@@ -43,9 +43,7 @@ char *get_command_path(const char *cmd)
         snprintf(full_path, len, "%s/%s", token, cmd);
     	printf("Trying path: %s\n", full_path);
 
-        strcpy(full_path, token);
-        strcat(full_path, "/");
-        strcat(full_path, cmd);
+    snprintf(full_path, len, "%s/%s", token, cmd);
 
         /* Check if the command exists at the constructed path */
         if (access(full_path, F_OK) == 0)
