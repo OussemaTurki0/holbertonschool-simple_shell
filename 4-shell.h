@@ -23,9 +23,9 @@ void free_args(char **args);
 int shell_exit(void);
 int shell_cd(char **args);
 int shell_env(void);
-char *get_command_path(const char *command);
+char *get_command_path(const char *cmd);
 int is_builtin(char *cmd);
 void handle_error(void);
-int is_interactive(void);
+int interactive(void);
 
 #endif /* SHELL_H */
