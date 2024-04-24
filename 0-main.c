@@ -1,122 +1,35 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "4-shell.h"
 
 /**
- * print_error - Prints an error message for unrecognized commands.
- * @program_name: The name of the program (shell).
- * @command: The unrecognized command.
+ * main - Entry point of the shell
+ *
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
  */
-void print_error(char *program_name, char *command)
+int main(void)
 {
-    fprintf(stderr, "Error: %s: %s: command not found\n",
-            program_name, command);
-}
-
-/**
- * handle_interactive_mode - Handles interactive mode of the shell.
- */
-void handle_interactive_mode(void)
-{
-    int i;
-    char **args;
     char *line;
+    char **args;
     int status;
 
     do
     {
-        display_prompt();               /* Display the shell prompt */
-        line = read_line();             /* Read a line of input from the user */
+        line = read_line();
+        args = split_line(line);
+        status = execute(args);
 
-        if (line == NULL)
-        {
-            if (isatty(STDIN_FILENO))
-            {
-                printf("\n");           /* Print a newline if Ctrl+D is pressed */
-            }
-            return;                     /* Exit the function */
-        }
+        free(line);
+        free_args(args);
+    } while (status);
 
-        args = tokenizer(line);         /* Tokenize the input line */
-        if (args != NULL)
-        {
-            status = handle_built_in(args, &status); /* Handle built-in commands */
-            if (status == 0)
-            {
-                free(line);                     /* Free the allocated memory for the input line */
-                free(args);                     /* Free the allocated memory for the args array */
-                return;                     /* Exit the function */
-            }
-            /* Free the memory allocated for each argument */
-            for (i = 0; args[i] != NULL; i++)
-            {
-                free(args[i]);
-            }
-            free(args);                     /* Free the allocated memory for the args array */
-        }
-
-        status = execute_command(args); /* Execute the command */
-        free(line);                     /* Free the allocated memory for the input line */
-    } while (status);                   /* Continue the loop if status is not 0 (exit command) */
+    return (EXIT_SUCCESS);
 }
 
 /**
- * handle_non_interactive_mode - Handles non-interactive mode of the shell.
+ * is_interactive - Check if the shell is running in interactive mode
+ *
+ * Return: 1 if interactive, 0 otherwise
  */
-void handle_non_interactive_mode(void)
+int is_interactive(void)
 {
-    char *line;
-    int i;
-    char **args;
-    int status;
-
-    line = read_line_from_file(stdin); /* Read a line of input from stdin */
-    if (line != NULL)
-    {
-        args = tokenizer(line);         /* Tokenize the input line into arguments */
-        if (args != NULL)
-        {
-            status = handle_built_in(args, &status); /* Handle built-in commands */
-            if (status == 0)
-            {
-                free(line);                     /* Free the allocated memory for the input line */
-                free(args);                     /* Free the allocated memory for the args array */
-                return;                     /* Exit the function */
-            }
-            /* Free the memory allocated for each argument */
-            for (i = 0; args[i] != NULL; i++)
-            {
-                free(args[i]);
-            }
-            /* Free the memory allocated for the args array itself */
-            free(args);
-            free(line);                 /* Free the allocated memory for the input line */
-            return;                     /* Exit the function */
-        }
-        else
-        {
-            fprintf(stderr, "Error: Unable to read input.\n");
-            exit(1);                    /* Exit the program with non-zero status */
-        }
-    }
-}
-
-/**
- * main - Entry point of the simple shell program.
- * Handle non-interactive mode: shell should be able to read commands from a file and execute them, rather than relying on user input from the terminal.
- * Return: 0 on success, non-zero on failure.
- */
-int main(void)
-{
-    if (isatty(STDIN_FILENO))
-    {
-        handle_interactive_mode();  /* Handle interactive mode */
-    }
-    else
-    {
-        handle_non_interactive_mode(); /* Handle non-interactive mode */
-    }
-
-    return 0;   /* Exit the program with status 0 on success */
+    return (isatty(STDIN_FILENO));
 }
