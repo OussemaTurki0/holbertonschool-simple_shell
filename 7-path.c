@@ -6,57 +6,58 @@
 
 /**
  * get_command_path - Retrieve the full path of a command.
- * @command: The command name.
+ * @cmd: The command name.
  *
  * Return: The full path of the command, or NULL if not found.
  */
-char *get_command_path(const char *command)
+char *get_command_path(const char *cmd)
 {
+	char *full_path;
     char *path;
     char *token;
-    char *tmp;
+    char *temporary;
     char *delim = ":";
 
-    if (command == NULL)
-        return NULL;
+    if (cmd == NULL)
+        return (NULL);
 
     /* Get the PATH environment variable */
     path = getenv("PATH");
     if (path == NULL)
-        return NULL;
+        return (NULL);
 
     /* Create a copy of PATH to tokenize */
-    tmp = strdup(path);
-    if (tmp == NULL)
-        return NULL;
+    temporary = strdup(path);
+    if (temporary == NULL)
+        return (NULL);
 
     /* Tokenize the PATH variable to search for the command */
-    token = strtok(tmp, delim);
+    token = strtok(temporary, delim);
     while (token != NULL)
     {
         /* Construct the full path to the command */
-        char *full_path = malloc(strlen(token) + strlen(command) + 2);
+        full_path = malloc(strlen(token) + strlen(cmd) + 2);
         if (full_path == NULL)
         {
-            free(tmp);
-            return NULL;
+            free(temporary);
+            return (NULL);
         }
 
         strcpy(full_path, token);
         strcat(full_path, "/");
-        strcat(full_path, command);
+        strcat(full_path, cmd);
 
         /* Check if the command exists at the constructed path */
         if (access(full_path, F_OK) == 0)
         {
-            free(tmp);
-            return full_path;
+            free(temporary);
+            return (full_path);
         }
 
         free(full_path);
         token = strtok(NULL, delim);
     }
 
-    free(tmp);
-    return NULL; /* Command not found */
+    free(temporary);
+    return (NULL); /* Command not found */
 }
