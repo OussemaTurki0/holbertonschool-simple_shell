@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <string.h>
 #include "4-shell.h"
+
 /**
  * execute_command - Execute a command.
  * @args: Array of command arguments.
@@ -16,37 +17,67 @@ int execute_command(char **args)
 {
     int status = 0;
     pid_t pid;
-    char *path;
 
-    path = get_command_path(args[0]);
-    if (path == NULL)
-        return (1);
-
-    if (handle_built_in(args, &status) == 1)
+    if (args == NULL || args[0] == NULL)
     {
-        free(path);  /* Free path if it's a built-in command */
-        return (status);
+        /* Empty command */
+        return 1;
     }
 
+    if (strcmp(args[0], "exit") == 0)
+    {
+        /* Exit the shell */
+        return 0;
+    }
+
+    if (strcmp(args[0], "env") == 0)
+    {
+        /* Print environment variables */
+        char **env;
+        for (env = environ; *env != NULL; env++)
+        {
+            printf("%s\n", *env);
+        }
+        return 1;
+    }
+
+    if (strcmp(args[0], "cd") == 0)
+    {
+        /* Change directory */
+        if (args[1] == NULL)
+        {
+            fprintf(stderr, "Error: cd: missing argument\n");
+        }
+        else if (chdir(args[1]) != 0)
+        {
+            perror("Error");
+        }
+        return 1;
+    }
+
+    /* For other commands, try to execute them */
     pid = fork();
 
     if (pid == 0)
     {
-        if (execve(path, args, environ) == -1)
+        /* Child process */
+        if (execve(args[0], args, environ) == -1)
         {
-            perror("Error");
+            /* If execve fails, print "command not found" */
+            fprintf(stderr, "Error: %s: command not found\n", args[0]);
             exit(EXIT_FAILURE);
         }
     }
     else if (pid < 0)
     {
+        /* Fork failed */
         perror("Error");
     }
     else
     {
+        /* Parent process */
         waitpid(pid, &status, 0);
     }
 
-    free(path);  /* Free path if it's an external command */
-    return (1);
+    return 1;
 }

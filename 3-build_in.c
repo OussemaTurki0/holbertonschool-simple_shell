@@ -78,8 +78,13 @@ int handle_built_in(char **args, int *status)
         if (strcmp(args[0], cmds[i].name) == 0)
         {
             *status = cmds[i].function(args);
-            return (1);
+            return (1); /* Return 1 for built-in commands */
         }
+/*        else 
+        {
+            printf( "Error command not found\n");
+        }
+*/
     }
 
     return (0); /* Command not found */
