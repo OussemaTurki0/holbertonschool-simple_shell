@@ -1,4 +1,27 @@
 #include "4-shell.h"
+/**
+ * execute_builtin - Execute a builtin command
+ * @args: Array of command arguments
+ *
+ * Return: 1 if successful, 0 otherwise
+ */
+int execute_builtin(char **args)
+{
+    if (strcmp(args[0], "exit") == 0)
+    {
+        shell_exit();
+        return (0);
+    }
+    else if (strcmp(args[0], "env") == 0)
+    {
+        return (shell_env());
+    }
+    else if (strcmp(args[0], "cd") == 0)
+    {
+        return (shell_cd(args));
+    }
+    return (0); /* Not a builtin command */
+}
 
 /**
  * execute - Execute a command
@@ -48,30 +71,9 @@ int execute(char **args)
             waitpid(pid, &status, WUNTRACED);
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
-    return (1);
-}
+        free(cmd_path);
 
-/**
- * execute_builtin - Execute a builtin command
- * @args: Array of command arguments
- *
- * Return: 1 if successful, 0 otherwise
- */
-int execute_builtin(char **args)
-{
-    if (strcmp(args[0], "exit") == 0)
-    {
-        return (shell_exit());
-    }
-    else if (strcmp(args[0], "env") == 0)
-    {
-        return (shell_env());
-    }
-    else if (strcmp(args[0], "cd") == 0)
-    {
-        return (shell_cd(args));
-    }
-    return (0); /* Not a builtin command */
+    return (1);
 }
 /**
  * free_args - Free memory allocated for an array of strings.
@@ -80,6 +82,7 @@ int execute_builtin(char **args)
  * Description: This function frees each string in the array @args
  *              and then frees the array itself.
  */
+
 void free_args(char **args)
 {
     int i = 0;
