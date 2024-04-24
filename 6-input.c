@@ -9,14 +9,14 @@ char *read_line(void)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
-	ssize_t getline_return;
+	ssize_t get_line;
 
-	if (is_interactive())
+	if (interactive())
 	{
 		display_prompt();
 	}
-	getline_return = getline(&line, &bufsize, stdin);
-	if (getline_return == -1)
+	get_line = getline(&line, &bufsize, stdin);
+	if (get_line == -1)
 	{
 		if (feof(stdin))
 		{
