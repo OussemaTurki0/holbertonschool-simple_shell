@@ -11,10 +11,6 @@ char *read_line(void)
 	size_t bufsize = 0;
 	ssize_t get_line;
 
-	if (interactive())
-	{
-		display_prompt();
-	}
 	get_line = getline(&line, &bufsize, stdin);
 	if (get_line == -1)
 	{
@@ -30,3 +26,4 @@ char *read_line(void)
 	}
 	return (line);
 }
+
