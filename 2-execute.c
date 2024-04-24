@@ -1,83 +1,92 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <string.h>
 #include "4-shell.h"
 
 /**
- * execute_command - Execute a command.
- * @args: Array of command arguments.
+ * execute - Execute a command
+ * @args: Array of command arguments
  *
- * Return: 1 to continue the shell loop, 0 to exit the shell.
+ * Return: 1 if successful, 0 otherwise
  */
-int execute_command(char **args)
+int execute(char **args)
 {
-    int status = 0;
+    char *cmd_path;
     pid_t pid;
+    int status;
 
-    if (args == NULL || args[0] == NULL)
+    if (args[0] == NULL)
     {
-        /* Empty command */
-        return 1;
+        return (1); /* Empty command */
     }
 
-    if (strcmp(args[0], "exit") == 0)
+    if (is_builtin(args[0]))
     {
-        /* Exit the shell */
-        return 0;
+        return (execute_builtin(args));
+    }
+    cmd_path = get_command_path(args[0]);
+    if (cmd_path == NULL)
+    {
+        fprintf(stderr, "hsh: command not found: %s\n", args[0]);
+        return (1);
     }
 
-    if (strcmp(args[0], "env") == 0)
-    {
-        /* Print environment variables */
-        char **env;
-        for (env = environ; *env != NULL; env++)
-        {
-            printf("%s\n", *env);
-        }
-        return 1;
-    }
-
-    if (strcmp(args[0], "cd") == 0)
-    {
-        /* Change directory */
-        if (args[1] == NULL)
-        {
-            fprintf(stderr, "Error: cd: missing argument\n");
-        }
-        else if (chdir(args[1]) != 0)
-        {
-            perror("Error");
-        }
-        return 1;
-    }
-
-    /* For other commands, try to execute them */
     pid = fork();
-
     if (pid == 0)
     {
-        /* Child process */
-        if (execve(args[0], args, environ) == -1)
+        if (execvp(args[0], args) == -1)
         {
-            /* If execve fails, print "command not found" */
-            fprintf(stderr, "Error: %s: command not found\n", args[0]);
-            exit(EXIT_FAILURE);
+            handle_error();
         }
+        exit(EXIT_FAILURE);
     }
     else if (pid < 0)
     {
-        /* Fork failed */
-        perror("Error");
+        handle_error();
     }
     else
     {
-        /* Parent process */
-        waitpid(pid, &status, 0);
+        do
+        {
+            waitpid(pid, &status, WUNTRACED);
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
+    return (1);
+}
 
-    return 1;
+/**
+ * execute_builtin - Execute a builtin command
+ * @args: Array of command arguments
+ *
+ * Return: 1 if successful, 0 otherwise
+ */
+int execute_builtin(char **args)
+{
+    if (strcmp(args[0], "exit") == 0)
+    {
+        return (shell_exit());
+    }
+    else if (strcmp(args[0], "env") == 0)
+    {
+        return (shell_env());
+    }
+    else if (strcmp(args[0], "cd") == 0)
+    {
+        return (shell_cd(args));
+    }
+    return (0); /* Not a builtin command */
+}
+/**
+ * free_args - Free memory allocated for an array of strings.
+ * @args: Array of strings to free.
+ *
+ * Description: This function frees each string in the array @args
+ *              and then frees the array itself.
+ */
+void free_args(char **args)
+{
+    int i = 0;
+    while (args[i] != NULL)
+    {
+        free(args[i]);
+        i++;
+    }
+    free(args);
 }
