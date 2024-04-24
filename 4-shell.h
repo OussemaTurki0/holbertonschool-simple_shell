@@ -14,6 +14,7 @@
 extern char **environ;
 
 /* Function prototypes */
+int main(void);
 void display_prompt(void);
 char *read_line(void);
 char **split_line(char *line);
@@ -26,6 +27,8 @@ int shell_env(void);
 char *get_command_path(const char *cmd);
 int is_builtin(char *cmd);
 void handle_error(void);
-int interactive(void);
+void interactive_shell(void);
+void non_interactive_shell(void);
+
 
 #endif /* SHELL_H */
