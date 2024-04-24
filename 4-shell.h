@@ -30,5 +30,4 @@ void handle_error(void);
 void interactive_shell(void);
 void non_interactive_shell(void);
 
-
 #endif /* SHELL_H */
