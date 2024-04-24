@@ -1,35 +1,74 @@
 #include "4-shell.h"
 
 /**
- * main - Entry point of the shell
- *
- * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
+ * interactive_shell - Run the shell in interactive mode.
  */
-int main(void)
+void interactive_shell(void)
 {
-    char *line;
-    char **args;
-    int status;
+	char *line;
+	char **args;
+	int status;
 
-    do
-    {
-        line = read_line();
-        args = split_line(line);
-        status = execute(args);
+	do {
+		display_prompt();   /* Display the shell prompt */
+		line = read_line(); /* Read input line */
+		if (line == NULL)
+		{
+			printf("\n");
+			break;  /* Exit loop on Ctrl+D (EOF) */
+		}
 
-        free(line);
-        free_args(args);
-    } while (status);
+		args = split_line(line); /* Split input line into arguments */
 
-    return (EXIT_SUCCESS);
+		if (args != NULL)
+		{
+			status = execute(args); /* Execute command */
+
+			free_args(args); /* Free memory */
+		}
+/* Ensure the shell waits for user input after execution */
+		if (status)
+			printf("\n");
+
+	} while (1);
 }
 
 /**
- * is_interactive - Check if the shell is running in interactive mode
- *
- * Return: 1 if interactive, 0 otherwise
+ * non_interactive_shell - Run the shell in non-interactive mode.
  */
-int is_interactive(void)
+void non_interactive_shell(void)
 {
-    return (isatty(STDIN_FILENO));
+	char *line;
+	char **args;
+
+	while ((line = read_line()) != NULL)
+	{
+		args = split_line(line);
+		if (args != NULL)
+		{
+			execute(args);
+			free_args(args); /* Free memory */
+		}
+	}
 }
+
+/**
+ * main - Entry point of the shell.
+ * Return: success.
+ */
+int main(void)
+{
+	if (isatty(STDIN_FILENO))
+	{
+        /* Interactive mode */
+		run_interactive_shell();
+	}
+	else
+	{
+        /* Non-interactive mode */
+		run_non_interactive_shell();
+	}
+
+	return (EXIT_SUCCESS);
+}
+
