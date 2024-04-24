@@ -7,7 +7,7 @@
  */
 int shell_exit(void)
 {
-	return (0); /* Return 0 to indicate exit */
+	exit(EXIT_SUCCESS); /* Call exit to terminate the program */
 }
 
 /**
@@ -25,7 +25,7 @@ int shell_cd(char **args)
 	}
 	if (chdir(args[1]) != 0)
 	{
-		perror("hsh");
+		perror("Error");
 	}
 	return (1);
 }
