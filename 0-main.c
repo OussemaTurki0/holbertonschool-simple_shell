@@ -60,12 +60,10 @@ int main(void)
 {
 	if (isatty(STDIN_FILENO))
 	{
-        /* Interactive mode */
 		interactive_shell();
 	}
 	else
 	{
-        /* Non-interactive mode */
 		non_interactive_shell();
 	}
 
