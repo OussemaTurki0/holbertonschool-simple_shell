@@ -9,6 +9,7 @@ char *_getenv(const char *env_var)
 {
 	int i = 0;
 	char *key;
+
 	while (environ[i])
 	{
 		key = strtok(environ[i], "="); /* Extract key from environment variable */
