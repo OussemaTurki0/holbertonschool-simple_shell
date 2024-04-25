@@ -1,0 +1,67 @@
+.TH SH 1 "APRIL 2024"
+
+.SH NAME
+.B sh
+\- simple shell
+
+.SH SYNOPSIS
+.B #include "4-shell.h"
+.br
+.in +4
+.B void interactive_shell(void);
+.br
+.B void non_interactive_shell(void);
+.br
+.B int main(void);
+.br
+.in
+
+.SH DESCRIPTION
+The
+.B sh
+is a simple shell program that provides a command-line interface for executing commands. It supports both interactive and non-interactive modes of operation.
+
+.SH FUNCTIONS
+The following functions are available:
+
+.TP
+.B interactive_shell(void)
+Runs the shell in interactive mode, where commands are entered directly by the user.
+
+.TP
+.B non_interactive_shell(void)
+Runs the shell in non-interactive mode, where commands are read from a file or input stream.
+
+.TP
+.B main(void)
+Entry point of the shell program. Determines whether to run the shell in interactive or non-interactive mode based on whether it is connected to a terminal.
+
+.SH RETURN VALUE
+The
+.B main
+function returns EXIT_SUCCESS upon successful execution.
+
+.SH EXAMPLES
+Example usage of the shell:
+
+.in +4
+.nf
+.sp
+\fBsh\fR
+.br
+Runs the shell in interactive mode.
+.sp
+\fBsh < input_file\fR
+.br
+Runs the shell in non-interactive mode, reading commands from input_file.
+.fi
+.in
+
+.SH SEE ALSO
+.B bash(1), zsh(1), ksh(1)
+
+.SH AUTHOR
+This version of sh was written by Ghofrane Amemi and Oussema Turki.
+
+.SH COPYRIGHT
+Anyone can use it. It's totally free.
