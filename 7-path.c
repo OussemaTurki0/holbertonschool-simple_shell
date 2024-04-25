@@ -9,6 +9,13 @@ char *_getenv(const char *env_var)
 {
 int i = 0;
 char *key;
+while (environ[i])
+{
+key = strtok(environ[i], "="); /* Extract key from environment variable */
+if (strcmp(env_var, key) == 0)
+return (strtok(NULL, "/")); /* Return value if key matches */
+i++; /* Move to the next environment variable */
+}
 }
 
 /**
