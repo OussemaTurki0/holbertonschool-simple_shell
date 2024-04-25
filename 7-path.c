@@ -1,6 +1,17 @@
 #include "4-shell.h"
 
 /**
+* _getenv - handling the environment.
+* @env_var: the variable to retrieve.
+* Return: value of the variable, otherwise NULL.
+*/
+char *_getenv(const char *env_var)
+{
+int i = 0;
+char *key;
+}
+
+/**
  * get_command_path - Retrieve the full path of a command.
  * @command: The command name.
  *
