@@ -27,7 +27,7 @@ To install the Holberton Simple Shell, follow these steps:
 ``git clone https://github.com/OussemaTurki0/holbertonschool-simple_shell.git``
 
 2. Compile the source code using GCC:
-`gcc 4.8.4 -Wall -Werror -Wextra -pedantic *.c -o hsh`.  
+`gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh`.  
 
 ## Features
 
