@@ -1,6 +1,23 @@
 #include "4-shell.h"
 
 /**
+* is_path - Checks if the command is an absolute path.
+* @cmd: The command to check.
+* Return: 1 if it is an absolute path, 0 otherwise.
+*/
+int is_path(const char *cmd)
+{
+int i; /* Counter for iterating through the command string */
+/* Iterate through the command string until finding a '/' */
+for (i = 0; cmd[i] != '/'; i++)
+{
+if (cmd[i] == '\0')
+return (0);
+}
+return (1); /* Return 1 if a '/' was found */
+}
+
+/**
  * _getenv - handling the environment.
  * @env_var: the variable to retrieve.
  * Return: value of the variable, otherwise NULL.
@@ -42,7 +59,7 @@ char *get_command_path(const char *command)
 	if (!envr) /* If PATH is not set, return NULL */
 		return (NULL);
 	gpath = strtok(envr, delim); /* Get the first path directory */
-	while (gpath)	 /* Loop through each path directory */
+	while (gpath)				 /* Loop through each path directory */
 	{
 		cmmd = malloc(strlen(gpath) + strlen(command) + 2);
 		if (!cmmd) /* Check if memory allocation failed */
@@ -50,5 +67,17 @@ char *get_command_path(const char *command)
 			free(envr);	   /* Free memory allocated for envr */
 			return (NULL); /* Return NULL */
 		}
+		snprintf(cmmd, strlen(gpath) + strlen(command) + 2, "%s/%s", gpath, command);
+		if (access(cmmd, F_OK) == 0)
+		{
+			free(envr);	   /* Free memory allocated for envr */
+			return (cmmd); /* Return the constructed command path */
+		}
+
+		free(cmmd);
+		gpath = strtok(NULL, delim); /* Get the next path directory */
 	}
+	free(envr);
+	return (NULL); /* Return NULL if command not found */
 }
+
