@@ -16,6 +16,7 @@ if (strcmp(env_var, key) == 0)
 return (strtok(NULL, "/")); /* Return value if key matches */
 i++; /* Move to the next environment variable */
 }
+return (NULL); /* Return NULL if no match found */
 }
 
 /**
