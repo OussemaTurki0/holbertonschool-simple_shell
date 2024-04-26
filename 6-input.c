@@ -14,15 +14,15 @@ char *read_line(void)
 	get_line = getline(&line, &bufsize, stdin); /* Read a line from stdin */
 	if (get_line == -1) /* Check if getline failed */
 	{
-		if (feof(stdin)) /* Check if end-of-file was reached */
+		if (line != NULL) /* Check if end-of-file was reached */
+		{
+			free(line);
+		}
+		else
 		{
 			printf("\n"); /* Print a newline character */
 			exit(EXIT_SUCCESS); /* Exit the program with success status */
 		}
-		else
-		{
-			handle_error(); /* Call handle_error function */
-		}
 	}
-	return line; /* Return the line read from stdin */
+	return (line); /* Return the line read from stdin */
 }
