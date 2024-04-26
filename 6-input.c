@@ -7,23 +7,22 @@
  */
 char *read_line(void)
 {
-	char *line = NULL;
-	size_t bufsize = 0;
-	ssize_t get_line;
+	char *line = NULL; /* Initialize line to NULL */
+	size_t bufsize = 0; /* Initialize bufsize to 0 */
+	ssize_t get_line; /* Variable to store the return value of getline */
 
-	get_line = getline(&line, &bufsize, stdin);
-	if (get_line == -1)
+	get_line = getline(&line, &bufsize, stdin); /* Read a line from stdin */
+	if (get_line == -1) /* Check if getline failed */
 	{
-		if (feof(stdin))
+		if (feof(stdin)) /* Check if end-of-file was reached */
 		{
-			printf("\n");
-			exit(EXIT_SUCCESS);
+			printf("\n"); /* Print a newline character */
+			exit(EXIT_SUCCESS); /* Exit the program with success status */
 		}
 		else
 		{
-			handle_error();
+			handle_error(); /* Call handle_error function */
 		}
 	}
-	return (line);
+	return line; /* Return the line read from stdin */
 }
-

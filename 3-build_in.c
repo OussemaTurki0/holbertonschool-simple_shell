@@ -1,3 +1,9 @@
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <limits.h> /* Include limits.h for PATH_MAX */
 #include "4-shell.h"
 
 /**
@@ -7,7 +13,7 @@
  */
 int shell_exit(void)
 {
-	exit(EXIT_SUCCESS); /* Call exit to terminate the program */
+    exit(EXIT_SUCCESS); /* Call exit to terminate the program */
 }
 
 /**
@@ -17,19 +23,20 @@ int shell_exit(void)
  */
 int shell_pwd(void)
 {
-	char cwd[PATH_MAX];
+    char cwd[PATH_MAX];
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		printf("%s\n", cwd);
-		return (1);
-	}
-	else
-	{
-		perror("getcwd() error");
-		return (0);
-	}
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+    {
+        printf("%s\n", cwd);
+        return (1);
+    }
+    else
+    {
+        perror("getcwd() error");
+        return (0);
+    }
 }
+
 /**
  * shell_env - Builtin command: env
  *
@@ -37,14 +44,14 @@ int shell_pwd(void)
  */
 int shell_env(void)
 {
-	int i = 0;
+    int i = 0;
 
-	while (environ[i])
-	{
-		printf("%s\n", environ[i]);
-		i++;
-	}
-	return (1);
+    while (environ[i])
+    {
+        printf("%s\n", environ[i]);
+        i++;
+    }
+    return (1);
 }
 
 /**
@@ -55,15 +62,15 @@ int shell_env(void)
  */
 int is_builtin(char *cmd)
 {
-	return ((strcmp(cmd, "exit") == 0 || strcmp(cmd, "pwd") == 0
-	|| strcmp(cmd, "env") == 0));
+    return ((strcmp(cmd, "exit") == 0 || strcmp(cmd, "pwd") == 0
+             || strcmp(cmd, "env") == 0));
 }
+
 /**
  * handle_error - Print error message and exit
  */
 void handle_error(void)
 {
-	perror("Error");
-	exit(EXIT_FAILURE);
+    perror("Error");
+    exit(EXIT_FAILURE);
 }
-

@@ -5,9 +5,9 @@
  */
 void interactive_shell(void)
 {
-	char *line;
-	char **args;
-	int status;
+	char *line; /* Store user input line */
+	char **args; /* Store arguments from the input line */
+	int status; /* Store the status of the command execution */
 
 	do {
 		display_prompt();   /* Display the shell prompt */
@@ -38,8 +38,8 @@ void interactive_shell(void)
  */
 void non_interactive_shell(void)
 {
-	char *line;
-	char **args;
+	char *line; /* Store user input line */
+	char **args; /* Store arguments from the input line */
 
 	while ((line = read_line()) != NULL)
 	{
@@ -62,11 +62,10 @@ int main(void)
 	{
 		interactive_shell();
 	}
-	else
+	else 
 	{
 		non_interactive_shell();
 	}
 
 	return (EXIT_SUCCESS);
 }
-
