@@ -1,4 +1,4 @@
-#include "4-shell.h"
+#include "4-shell.h" // Include the custom shell header file
 
 /**
  * interactive_shell - Run the shell in interactive mode.
@@ -43,10 +43,10 @@ void non_interactive_shell(void)
 
 	while ((line = read_line()) != NULL)
 	{
-		args = split_line(line);
+		args = split_line(line); /* Split input line into arguments */
 		if (args != NULL)
 		{
-			execute(args);
+			execute(args); /* Execute command */
 			free_args(args); /* Free memory */
 		}
 	}
@@ -58,14 +58,14 @@ void non_interactive_shell(void)
  */
 int main(void)
 {
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO)) /* Check if stdin is a terminal */
 	{
-		interactive_shell();
+		interactive_shell(); /* Run the shell in interactive mode */
 	}
 	else 
 	{
-		non_interactive_shell();
+		non_interactive_shell(); /* Run the shell in non-interactive mode */
 	}
 
-	return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS); /* Return success status */
 }
