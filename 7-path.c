@@ -8,40 +8,41 @@
  */
 char *get_command_path(const char *cmd)
 {
-char *full_path;
-char *path;
-char *token;
-char *temporary;
-char *delim = ":";
-size_t len;
+    char *full_path;
+    char *path;
+    char *token;
+    char *temporary;
+    char *delim = ":";
+    size_t len;
 
-if (cmd == NULL)
-return (NULL);
-path = getenv("PATH");     /* Get the PATH environment variable */
-if (path == NULL)
-return (NULL);
-temporary = strdup(path);     /* Create a copy of PATH to tokenize */
-if (temporary == NULL)
-return (NULL);
-/* Tokenize the PATH variable to search for the command */
-token = strtok(temporary, delim); /* Tokenize the PATH variable */
-while (token != NULL)
-{
-len = strlen(token) + strlen(cmd) + 2; /* Construct the full path */
-full_path = malloc(len);
-if (full_path == NULL)
-{
-free(temporary);
-return (NULL);
-}
-if (access(full_path, F_OK) == 0) /* Check the command exists at the path */
-{
-free(temporary);
-return (full_path);
-}
-free(full_path);
-token = strtok(NULL, delim);
-}
-free(temporary);
-return (NULL); /* Command not found */
+    if (cmd == NULL)
+        return (NULL);
+    path = getenv("PATH");     /* Get the PATH environment variable */
+    if (path == NULL)
+        return (NULL);
+    temporary = strdup(path);     /* Create a copy of PATH to tokenize */
+    if (temporary == NULL)
+        return (NULL);
+    /* Tokenize the PATH variable to search for the command */
+    token = strtok(temporary, delim); /* Tokenize the PATH variable */
+    while (token != NULL)
+    {
+        len = strlen(token) + strlen(cmd) + 2; /* Construct the full path */
+        full_path = malloc(len);
+        if (full_path == NULL)
+        {
+            free(temporary);
+            return (NULL);
+        }
+        snprintf(full_path, len, "%s/%s", token, cmd); /* Concatenate token, "/", and cmd */
+        if (access(full_path, F_OK) == 0) /* Check the command exists at the path */
+        {
+            free(temporary);
+            return (full_path);
+        }
+        free(full_path);
+        token = strtok(NULL, delim);
+    }
+    free(temporary);
+    return (NULL); /* Command not found */
 }

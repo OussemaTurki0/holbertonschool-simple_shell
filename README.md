@@ -14,7 +14,7 @@ This is a simple UNIX command line interpreter, created as part of the Holberton
 - [Contributing](#contributing)
 - [Authors](#authors)
 - [License](#license)
-
+- [Flowchart](#Flowchart)
 ## Description
 
 The Holberton Simple Shell, or hsh, is a simple UNIX command line interpreter created as part of the Holberton School curriculum. It provides users with a minimalistic interface to interact with their system, allowing them to execute basic commands.
@@ -47,6 +47,12 @@ To contribute to the Holberton Simple Shell, follow these steps:
 4. Push your changes to your fork
 5. Submit a pull request to the main repository
 
+## Flowchart
+
+
+![Logo](https://i.ibb.co/1LmbNfq/flowcharsimpleshell.png)
+
+
 ## Authors
 
 - Ghofrane Amemi
@@ -55,3 +61,4 @@ To contribute to the Holberton Simple Shell, follow these steps:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+

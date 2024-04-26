@@ -46,11 +46,13 @@ int execute(char **args)
         return (execute_builtin(args));
     }
 
+    /* Check if command is 'ls' */
     if (strcmp(args[0], "ls") == 0)
     {
-        args[0] = "/bin/ls"; /* Update the command path */
+    args[0] = "/bin/ls"; /* Update the command path */
     }
 
+    /* Get the full path of the command */
     cmd_path = get_command_path(args[0]);
     if (cmd_path == NULL)
     {
@@ -58,26 +60,30 @@ int execute(char **args)
         return (1);
     }
 
+    /* Fork a new process to execute the command */
     pid = fork();
     if (pid == 0)
     {
+        /* Child process */
         if (execve(cmd_path, args, environ) == -1)
         {
             perror("execve");
             exit(EXIT_FAILURE);
         }
-        /* This code will not be executed if execve is successful */
     }
     else if (pid < 0)
     {
+        /* Error forking process */
         perror("fork");
         free(cmd_path);
         return (1);
     }
     else
     {
+        /* Parent process */
         do
         {
+            /* Wait for child process to complete */
             waitpid(pid, &status, WUNTRACED);
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
@@ -85,6 +91,7 @@ int execute(char **args)
     free(cmd_path);
     return (1);
 }
+
 
 /**
  * free_args - Free memory allocated for an array of strings.
