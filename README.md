@@ -50,7 +50,7 @@ To contribute to the Holberton Simple Shell, follow these steps:
 ## Flowchart
 
 
-![Logo](https://i.ibb.co/1LmbNfq/flowcharsimpleshell.png)
+![Logo](https://i.ibb.co/vY4QMvf/flowcharsimpleshell001.png)
 
 
 ## Authors
